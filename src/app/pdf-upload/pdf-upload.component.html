@@ -1,0 +1,91 @@
+<h2>PDF Viewer</h2>
+
+<!-- File Input and Drag Drop Zone -->
+<div 
+  class="drop-zone"
+  [class.dragging]="isDragging"
+  (dragover)="onDragOver($event)"
+  (dragleave)="onDragLeave($event)"
+  (drop)="onDrop($event)">
+  <div class="drop-zone-content">
+    <p class="drag-text">📄 Drag and drop PDF file here or click to browse</p>
+    <input 
+      type="file" 
+      (change)="onFileChange($event)" 
+      accept=".pdf"
+      class="file-input">
+  </div>
+</div>
+
+<!-- Error Message -->
+<div *ngIf="error" class="error-message">
+  ✗ {{ error }}
+</div>
+
+<p *ngIf="fileName && !isLoading" class="file-name">✓ Loaded: {{ fileName }}</p>
+
+<!-- Loading Indicator -->
+<div *ngIf="isLoading" class="loading">
+  <p>Loading PDF...</p>
+</div>
+
+<!-- PDF Viewer -->
+<div *ngIf="pdfPages.length > 0 && !isLoading" class="pdf-container">
+  <!-- PDF Display -->
+  <div class="pdf-viewer">
+    <canvas 
+      *ngIf="currentPage && currentPage.canvas"
+      [width]="currentPage.canvas.width"
+      [height]="currentPage.canvas.height"
+      id="pdfCanvas">
+    </canvas>
+    <div *ngIf="currentPage && currentPage.canvas" class="canvas-wrapper">
+      <img 
+        [src]="currentPage.canvas.toDataURL()"
+        alt="PDF Page {{ currentPage.pageNumber }}"
+        class="pdf-image">
+    </div>
+  </div>
+
+  <!-- Navigation Controls -->
+  <div class="pdf-controls">
+    <button 
+      (click)="previousPage()" 
+      [disabled]="currentPageIndex === 0"
+      class="control-button">
+      ← Previous
+    </button>
+
+    <div class="page-info">
+      <input 
+        type="number" 
+        [(ngModel)]="currentPageIndex"
+        (change)="goToPage(currentPageIndex)"
+        min="0"
+        [max]="totalPages - 1"
+        class="page-input">
+      <span class="page-display"> / {{ totalPages }}</span>
+    </div>
+
+    <button 
+      (click)="nextPage()" 
+      [disabled]="currentPageIndex === totalPages - 1"
+      class="control-button">
+      Next →
+    </button>
+  </div>
+
+  <!-- Page Thumbnails -->
+  <div class="thumbnails">
+    <h3>Pages</h3>
+    <div class="thumbnail-list">
+      <div 
+        *ngFor="let page of pdfPages; let i = index"
+        (click)="goToPage(i)"
+        [class.active]="i === currentPageIndex"
+        class="thumbnail">
+        <span class="page-number">{{ page.pageNumber }}</span>
+      </div>
+    </div>
+  </div>
+</div>

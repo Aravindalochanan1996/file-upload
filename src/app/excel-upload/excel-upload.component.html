@@ -1,0 +1,50 @@
+<h2>Excel Upload</h2>
+
+<!-- File Input and Drag Drop Zone -->
+<div 
+  class="drop-zone"
+  [class.dragging]="isDragging"
+  (dragover)="onDragOver($event)"
+  (dragleave)="onDragLeave($event)"
+  (drop)="onDrop($event)">
+  <div class="drop-zone-content">
+    <p class="drag-text">📁 Drag and drop Excel file here or click to browse</p>
+    <input 
+      type="file" 
+      (change)="onFileChange($event)" 
+      accept=".xlsx,.xls"
+      class="file-input">
+  </div>
+</div>
+
+<p *ngIf="fileName" class="file-name">✓ Uploaded File: {{ fileName }}</p>
+
+<div *ngIf="sheets.length > 0" class="sheets-container">
+  <!-- Sheet Tabs -->
+  <div class="sheet-tabs">
+    <button 
+      *ngFor="let sheet of sheets; let i = index"
+      [class.active]="i === activeSheetIndex"
+      (click)="selectSheet(i)"
+      class="tab-button">
+      {{ sheet.name }}
+    </button>
+  </div>
+
+  <!-- Sheet Content -->
+  <div *ngIf="activeSheet" class="sheet-content">
+    <table *ngIf="activeSheet.data.length">
+      <thead>
+        <tr>
+          <th *ngFor="let header of activeSheet.headers">{{ header }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of activeSheet.data">
+          <td *ngFor="let header of activeSheet.headers">{{ row[header] }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <p *ngIf="!activeSheet.data.length">No data in this sheet</p>
+  </div>
+</div>
