@@ -23,7 +23,7 @@
 }
 
 .drop-zone-content {
-  pointer-events: none;
+  pointer-events: auto;
 }
 
 .drag-text {

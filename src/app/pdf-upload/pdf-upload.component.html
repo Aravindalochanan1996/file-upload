@@ -7,13 +7,15 @@
   (dragover)="onDragOver($event)"
   (dragleave)="onDragLeave($event)"
   (drop)="onDrop($event)">
-  <div class="drop-zone-content">
+  <div class="drop-zone-content" (click)="onSelectClick(fileInput)">
     <p class="drag-text">📄 Drag and drop PDF file here or click to browse</p>
     <input 
+      #fileInput
       type="file" 
       (change)="onFileChange($event)" 
       accept=".pdf"
-      class="file-input">
+      class="file-input"
+      style="display: none;">
   </div>
 </div>
 

@@ -7,13 +7,15 @@
   (dragover)="onDragOver($event)"
   (dragleave)="onDragLeave($event)"
   (drop)="onDrop($event)">
-  <div class="drop-zone-content">
+  <div class="drop-zone-content" (click)="onSelectClick(fileInput)">
     <p class="drag-text">📁 Drag and drop Excel file here or click to browse</p>
     <input 
+      #fileInput
       type="file" 
       (change)="onFileChange($event)" 
       accept=".xlsx,.xls"
-      class="file-input">
+      class="file-input"
+      style="display: none;">
   </div>
 </div>
 

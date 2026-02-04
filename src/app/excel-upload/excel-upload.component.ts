@@ -53,6 +53,10 @@ export class ExcelUploadComponent {
     }
   }
 
+  onSelectClick(fileInput: HTMLInputElement) {
+    fileInput.click();
+  }
+
   onDragOver(event: DragEvent) {
     event.preventDefault();
     event.stopPropagation();
