@@ -33,18 +33,76 @@
 
   <!-- Sheet Content -->
   <div *ngIf="activeSheet" class="sheet-content">
-    <table *ngIf="activeSheet.data.length">
-      <thead>
-        <tr>
-          <th *ngFor="let header of activeSheet.headers">{{ header }}</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let row of activeSheet.data">
-          <td *ngFor="let header of activeSheet.headers">{{ row[header] }}</td>
-        </tr>
-      </tbody>
-    </table>
-    <p *ngIf="!activeSheet.data.length">No data in this sheet</p>
+    <!-- Table View -->
+    <div class="table-section">
+      <h3>Data Table</h3>
+      <table *ngIf="activeSheet.data.length">
+        <thead>
+          <tr>
+            <th *ngFor="let header of activeSheet.headers">{{ header }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of activeSheet.data">
+            <td *ngFor="let header of activeSheet.headers">{{ row[header] }}</td>
+          </tr>
+        </tbody>
+      </table>
+      <p *ngIf="!activeSheet.data.length">No data in this sheet</p>
+    </div>
+
+    <!-- Chart Section -->
+    <div class="chart-section">
+      <h3>📊 Create Chart</h3>
+      
+      <div class="chart-controls">
+        <div class="control-group">
+          <label>X-Axis (Category):</label>
+          <select [(ngModel)]="selectedXAxis" class="select-input">
+            <option value="">-- Select Column --</option>
+            <option *ngFor="let header of activeSheet.headers" [value]="header">
+              {{ header }}
+            </option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label>Y-Axis (Values):</label>
+          <select [(ngModel)]="selectedYAxis" class="select-input">
+            <option value="">-- Select Column --</option>
+            <option *ngFor="let header of numericColumns" [value]="header">
+              {{ header }}
+            </option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label>Chart Type:</label>
+          <div class="chart-type-buttons">
+            <button 
+              *ngFor="let type of ['bar', 'line', 'pie', 'doughnut']"
+              (click)="changeChartType(type)"
+              [class.active]="chartConfig.type === type"
+              class="type-button">
+              {{ type | uppercase }}
+            </button>
+          </div>
+        </div>
+
+        <button (click)="generateChart()" class="generate-btn">
+          📈 Generate Chart
+        </button>
+      </div>
+
+      <!-- Chart Display -->
+      <div *ngIf="showChart" class="chart-display">
+        <div class="chart-wrapper">
+          <canvas id="excelChart"></canvas>
+        </div>
+        <button (click)="downloadChart()" class="download-btn">
+          ⬇️ Download Chart as PNG
+        </button>
+      </div>
+    </div>
   </div>
 </div>
