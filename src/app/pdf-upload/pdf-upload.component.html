@@ -22,15 +22,48 @@
   ✗ {{ error }}
 </div>
 
-<p *ngIf="fileName && !isLoading" class="file-name">✓ Loaded: {{ fileName }}</p>
+<p *ngIf="fileName && !isLoading && !isPasswordProtected" class="file-name">✓ Loaded: {{ fileName }}</p>
 
 <!-- Loading Indicator -->
 <div *ngIf="isLoading" class="loading">
   <p>Loading PDF...</p>
 </div>
 
+<!-- Password Protected Dialog -->
+<div *ngIf="isPasswordProtected && !isLoading" class="password-dialog-overlay">
+  <div class="password-dialog">
+    <div class="password-header">
+      <h3>🔒 Password Protected PDF</h3>
+      <p>This PDF is password protected. Please enter the password to view it.</p>
+    </div>
+    
+    <div class="password-body">
+      <input 
+        type="password" 
+        [(ngModel)]="password"
+        (keyup.enter)="submitPassword()"
+        placeholder="Enter password"
+        class="password-input"
+        autofocus>
+      
+      <div *ngIf="passwordError" class="password-error">
+        ✗ {{ passwordError }}
+      </div>
+    </div>
+
+    <div class="password-footer">
+      <button (click)="submitPassword()" class="submit-btn">
+        Unlock PDF
+      </button>
+      <button (click)="fileName = ''" class="cancel-btn">
+        Cancel
+      </button>
+    </div>
+  </div>
+</div>
+
 <!-- PDF Viewer -->
-<div *ngIf="pdfPages.length > 0 && !isLoading" class="pdf-container">
+<div *ngIf="pdfPages.length > 0 && !isLoading && !isPasswordProtected" class="pdf-container">
   <!-- PDF Display -->
   <div class="pdf-viewer">
     <canvas 
