@@ -1,11 +1,12 @@
 {
-  "name": "angular-excel-upload-full",
-  "version": "0.0.1",
+  "name": "file-upload",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "deploy": "ng build --base-href=/file-upload/ && npx angular-cli-ghpages --dir=dist/file-upload",
     "watch": "ng build --watch --configuration development"
   },
   "dependencies": {
@@ -28,6 +29,7 @@
     "@angular-devkit/build-angular": "^17.0.0",
     "@angular/cli": "^17.0.0",
     "@angular/compiler-cli": "^17.0.0",
+    "angular-cli-ghpages": "^2.0.0",
     "typescript": "~5.2.2"
   }
 }
